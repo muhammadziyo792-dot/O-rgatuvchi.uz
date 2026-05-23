@@ -19,6 +19,8 @@ class Teacher(Base):
     certificate_info = Column(Text, nullable=True)
     is_verified = Column(Boolean, default=False)
     status = Column(String(20), default="pending")
+
+    
     class User(Base):
     __tablename__ = "users"
 
