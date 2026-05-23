@@ -21,11 +21,11 @@ class Teacher(Base):
     status = Column(String(20), default="pending")
 
     
-    class User(Base):
-            __tablename__ = "users"
+class User(Base):
+    __tablename__ = "users"
 
-            id = Column(Integer, primary_key=True, index=True)
-            full_name = Column(String(100), nullable=False)
-            email = Column(String(100), nullable=False, unique=True)
-            hashed_password = Column(String(200), nullable=False)
-            role = Column(String(20), default="student")
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String(100), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
+    hashed_password = Column(String(200), nullable=False)
+    role = Column(String(20), default="student")
