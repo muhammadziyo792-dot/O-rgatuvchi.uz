@@ -35,10 +35,14 @@ app.include_router(test_router)
 app.include_router(rating_router)
 
 import os
+
 frontend_dir = os.path.join(os.path.dirname(__file__), "../../Frontend")
 if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-return FileResponse(os.path.join(os.path.dirname(__file__), "../../Frontend/index.html"))
+
 @app.get("/")
 def home():
-    return FileResponse("../Frontend/index.html")
+    index_path = os.path.join(os.path.dirname(__file__), "../../Frontend/index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"message": "O'rgatuvchi.uz API v2.0 ishlayapti!"}
