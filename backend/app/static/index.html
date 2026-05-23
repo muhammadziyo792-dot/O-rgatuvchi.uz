@@ -1,0 +1,854 @@
+bash
+
+cat > /home/claude/index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O'rgatuvchi.uz — Repetitor toping</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f0f;--surface:#181818;--card:#1e1e1e;--accent:#c8f135;--accent2:#7c3aed;--text:#f0f0f0;--muted:#888;--border:#2a2a2a;--danger:#ef4444;--success:#22c55e;--warning:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(15,15,15,0.96);backdrop-filter:blur(10px);z-index:100}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;cursor:pointer}.logo span{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:0.45rem 1rem;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;transition:all 0.2s}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-btn.active{border-color:var(--accent);color:var(--accent)}
+.btn-accent{background:var(--accent)!important;color:#0f0f0f!important;border-color:var(--accent)!important;font-weight:600!important}
+.btn-accent:hover{opacity:0.85}
+.btn-danger{background:rgba(239,68,68,0.1)!important;color:var(--danger)!important;border-color:var(--danger)!important}
+.user-chip{display:flex;align-items:center;gap:0.4rem;background:var(--surface);border:1px solid var(--border);padding:0.35rem 0.9rem;border-radius:100px;font-size:0.82rem;color:var(--accent);font-weight:600}
+.page{display:none}.page.active{display:block}
+/* HERO */
+.hero{padding:5rem 2rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,0.12) 0%,transparent 70%);top:-250px;left:50%;transform:translateX(-50%);pointer-events:none}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto 2rem;line-height:1.7}
+.search-bar{max-width:560px;margin:0 auto;display:flex;gap:0.5rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0.5rem}
+.search-bar input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.95rem;padding:0.4rem 0.5rem}
+.search-bar input::placeholder{color:var(--muted)}
+.search-bar button{background:var(--accent);color:#0f0f0f;border:none;padding:0.5rem 1.3rem;border-radius:10px;cursor:pointer;font-weight:600;font-family:'Syne',sans-serif;transition:opacity 0.2s}
+.search-bar button:hover{opacity:0.85}
+.hero-stats{display:flex;justify-content:center;gap:3rem;margin-top:2.5rem}
+.stat strong{display:block;font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--accent)}
+.stat span{font-size:0.82rem;color:var(--muted)}
+/* FILTERS */
+.filters{display:flex;gap:0.5rem;justify-content:center;padding:1.2rem 2rem;flex-wrap:wrap}
+.filter-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:0.4rem 1rem;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;transition:all 0.2s}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);color:#0f0f0f;border-color:var(--accent);font-weight:500}
+/* CONTENT */
+.content{max-width:1200px;margin:0 auto;padding:1rem 2rem 4rem}
+.section-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:1.2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+/* CARD */
+.teacher-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;transition:all 0.3s;position:relative;overflow:hidden}
+.teacher-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent));opacity:0;transition:opacity 0.3s}
+.teacher-card:hover{border-color:#333;transform:translateY(-2px)}
+.teacher-card:hover::before{opacity:1}
+.card-top{display:flex;align-items:center;gap:0.9rem;margin-bottom:0.9rem}
+.avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:#fff;flex-shrink:0}
+.card-info h3{font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;margin-bottom:0.15rem}
+.card-info small{font-size:0.78rem;color:var(--muted)}
+.badge{display:inline-block;background:rgba(200,241,53,0.1);color:var(--accent);font-size:0.72rem;padding:0.2rem 0.65rem;border-radius:100px;margin-bottom:0.7rem}
+.rating{font-size:0.82rem;color:var(--warning);margin-bottom:0.7rem}
+.card-meta{display:flex;gap:1.2rem;margin-bottom:0.8rem}
+.meta-item span:first-child{display:block;font-size:0.72rem;color:var(--muted)}
+.meta-item span:last-child{font-size:0.88rem;font-weight:500}
+.card-bio{font-size:0.82rem;color:var(--muted);line-height:1.5;margin-bottom:0.9rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.price{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--accent)}
+.price small{font-size:0.72rem;color:var(--muted);font-weight:400;font-family:'DM Sans',sans-serif}
+.book-btn{background:var(--accent);color:#0f0f0f;border:none;padding:0.45rem 1.1rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.82rem;font-family:'Syne',sans-serif;transition:opacity 0.2s}
+.book-btn:hover{opacity:0.85}
+/* FORMS */
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;max-width:600px}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.35rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:0.65rem 0.9rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.92rem;outline:none;transition:border-color 0.2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent)}
+.form-group select option{background:var(--surface)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.submit-btn{width:100%;background:var(--accent);color:#0f0f0f;border:none;padding:0.85rem;border-radius:10px;font-weight:700;font-size:0.95rem;font-family:'Syne',sans-serif;cursor:pointer;margin-top:0.3rem;transition:opacity 0.2s}
+.submit-btn:hover{opacity:0.85}
+/* AUTH */
+.auth-page{display:flex;align-items:center;justify-content:center;min-height:80vh;padding:2rem}
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:440px}
+.auth-card h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:0.4rem}
+.auth-card p{color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem}
+.auth-link{text-align:center;margin-top:1.2rem;font-size:0.85rem;color:var(--muted)}
+.auth-link a{color:var(--accent);cursor:pointer}
+.role-toggle{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.2rem}
+.role-btn{padding:0.65rem;border-radius:10px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.88rem;transition:all 0.2s}
+.role-btn.active{border-color:var(--accent);background:rgba(200,241,53,0.08);color:var(--accent);font-weight:500}
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:460px;position:relative;max-height:90vh;overflow-y:auto}
+.modal h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:1.2rem}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:0.9rem}
+/* BOOKINGS */
+.bookings-list{display:flex;flex-direction:column;gap:0.8rem}
+.booking-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.booking-info h4{font-family:'Syne',sans-serif;font-size:0.92rem;font-weight:600;margin-bottom:0.25rem}
+.booking-info p{font-size:0.8rem;color:var(--muted)}
+.status-badge{padding:0.25rem 0.8rem;border-radius:100px;font-size:0.76rem;font-weight:500}
+.status-pending{background:rgba(245,158,11,0.12);color:var(--warning)}
+.status-confirmed{background:rgba(34,197,94,0.12);color:var(--success)}
+.status-cancelled{background:rgba(239,68,68,0.12);color:var(--danger)}
+/* ADMIN */
+.admin-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem}
+.admin-tab{padding:0.5rem 1.2rem;border-radius:100px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;transition:all 0.2s}
+.admin-tab.active{background:var(--accent);color:#0f0f0f;border-color:var(--accent);font-weight:600}
+.admin-section{display:none}.admin-section.active{display:block}
+.pending-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;margin-bottom:1rem}
+.pending-card h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;margin-bottom:0.4rem}
+.pending-meta{color:var(--accent);font-size:0.88rem;margin-bottom:0.3rem}
+.pending-detail{color:var(--muted);font-size:0.82rem;line-height:1.6;margin-bottom:0.3rem}
+.pending-actions{display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap}
+.btn-verify{background:rgba(34,197,94,0.12);color:var(--success);border:1px solid var(--success);padding:0.4rem 1rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.82rem}
+.btn-reject{background:rgba(239,68,68,0.12);color:var(--danger);border:1px solid var(--danger);padding:0.4rem 1rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.82rem}
+.subjects-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.subject-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1rem;margin-bottom:0.5rem}
+.del-btn{background:rgba(239,68,68,0.1);color:var(--danger);border:none;padding:0.25rem 0.7rem;border-radius:7px;cursor:pointer;font-size:0.78rem}
+/* MISC */
+.empty{text-align:center;padding:3rem 2rem;color:var(--muted)}
+.loading{text-align:center;padding:2.5rem;color:var(--muted)}
+.divider{height:1px;background:var(--border);margin:1.2rem 0}
+.section-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#0f0f0f;padding:0.8rem 1.4rem;border-radius:12px;font-weight:600;font-size:0.88rem;z-index:300;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{background:var(--danger);color:#fff}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="showPage('home')">O'rgatuvchi<span>UZ</span></div>
+  <div class="nav-right" id="nav-right">
+    <button class="nav-btn active" onclick="showPage('home')">Bosh sahifa</button>
+    <button class="nav-btn" onclick="showPage('bookings')">Bronlar</button>
+    <button class="nav-btn" onclick="showPage('add-teacher')">O'qituvchi bo'lish</button>
+    <button class="nav-btn" onclick="openLoginModal()">Kirish</button>
+    <button class="nav-btn btn-accent" onclick="showPage('register')">Ro'yxatdan o'tish</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <h1>O'zingizga mos<br><em>repetitor toping</em></h1>
+    <p>Malakali o'qituvchilar bilan bog'laning. Online yoki offline darslar.</p>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Fan yoki o'qituvchi ismi..." oninput="filterTeachers()">
+      <button onclick="filterTeachers()">Qidirish</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong id="stat-teachers">0</strong><span>O'qituvchi</span></div>
+      <div class="stat"><strong id="stat-subjects">0</strong><span>Fan</span></div>
+      <div class="stat"><strong>4.8★</strong><span>Reyting</span></div>
+    </div>
+  </div>
+  <div class="filters" id="subject-filters">
+    <button class="filter-btn active" onclick="setFilter('',this)">Hammasi</button>
+  </div>
+  <div class="content">
+    <div id="teachers-grid" class="grid"><div class="loading">Yuklanmoqda...</div></div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="page-register" class="page">
+  <div class="auth-page">
+    <div class="auth-card">
+      <h2>Ro'yxatdan o'tish</h2>
+      <p>O'rgatuvchi.uz ga xush kelibsiz</p>
+      <div class="role-toggle">
+        <button class="role-btn active" id="role-student" onclick="setRole('student')">👨‍🎓 O'quvchi</button>
+        <button class="role-btn" id="role-teacher" onclick="setRole('teacher')">👨‍🏫 O'qituvchi</button>
+      </div>
+      <div class="form-group"><label>Ism familiya *</label><input type="text" id="reg-name" placeholder="Aziz Karimov"></div>
+      <div class="form-group"><label>Email *</label><input type="email" id="reg-email" placeholder="aziz@gmail.com"></div>
+      <div class="form-group"><label>Parol * (kamida 6 ta belgi)</label><input type="password" id="reg-password" placeholder="••••••"></div>
+      <button class="submit-btn" onclick="register()">Ro'yxatdan o'tish</button>
+      <div class="auth-link">Hisobingiz bormi? <a onclick="showPage('home');openLoginModal()">Kirish</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TEACHER -->
+<div id="page-add-teacher" class="page">
+  <div class="content">
+    <div class="section-title">O'qituvchi sifatida ariza topshirish</div>
+    <div class="section-sub">Arizangiz admin tomonidan ko'rib chiqiladi va tasdiqlangandan so'ng sahifada paydo bo'ladi.</div>
+    <div class="form-card">
+      <div class="form-row">
+        <div class="form-group"><label>Ism familiya *</label><input type="text" id="t-name" placeholder="Aziz Karimov"></div>
+        <div class="form-group"><label>Fan *</label><select id="t-subject"><option value="">Fan tanlang...</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Tajriba (yil) *</label><input type="number" id="t-experience" placeholder="5" min="0"></div>
+        <div class="form-group"><label>Narx (so'm/soat) *</label><input type="number" id="t-price" placeholder="50000" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Telefon</label><input type="text" id="t-phone" placeholder="+998901234567"></div>
+        <div class="form-group"><label>Shahar</label><input type="text" id="t-city" placeholder="Toshkent"></div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;margin-bottom:1rem;color:var(--accent)">📚 Ta'lim ma'lumotlari</div>
+      <div class="form-row">
+        <div class="form-group"><label>Universitet / Muassasa</label><input type="text" id="t-university" placeholder="TDTU, NUUz..."></div>
+        <div class="form-group"><label>Daraja turi</label>
+          <select id="t-degree">
+            <option value="">Tanlang</option>
+            <option value="Bakalavr">Bakalavr</option>
+            <option value="Magistr">Magistr</option>
+            <option value="Doktorant">Doktorant</option>
+            <option value="PhD">PhD</option>
+            <option value="Fan doktori">Fan doktori</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Bitirgan yili</label><input type="number" id="t-degree-year" placeholder="2020" min="1980" max="2030"></div>
+        <div class="form-group"><label>Sertifikat ma'lumoti</label><input type="text" id="t-certificate" placeholder="IELTS 7.5, CELTA..."></div>
+      </div>
+      <div class="form-group"><label>O'zingiz haqingizda</label><textarea id="t-bio" rows="3" placeholder="Tajribangiz, uslubingiz haqida..."></textarea></div>
+      <button class="submit-btn" onclick="addTeacher()">Ariza yuborish</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKINGS -->
+<div id="page-bookings" class="page">
+  <div class="content">
+    <div class="section-title">Bronlar</div>
+    <div id="bookings-list" class="bookings-list"><div class="loading">Yuklanmoqda...</div></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="content">
+    <div class="section-title">Admin Panel</div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab('pending')">⏳ Kutayotganlar</button>
+      <button class="admin-tab" onclick="switchAdminTab('subjects')">📚 Fanlar</button>
+    </div>
+    <!-- PENDING -->
+    <div id="admin-pending" class="admin-section active">
+      <div id="pending-list"><div class="loading">Yuklanmoqda...</div></div>
+    </div>
+    <!-- SUBJECTS -->
+    <div id="admin-subjects" class="admin-section">
+      <div class="subjects-grid">
+        <div>
+          <div class="form-card">
+            <div style="font-family:'Syne',sans-serif;font-weight:600;margin-bottom:1rem">Yangi fan qo'shish</div>
+            <div class="form-group"><label>Fan nomi *</label><input type="text" id="subj-name" placeholder="Matematika"></div>
+            <div class="form-group"><label>Emoji (ixtiyoriy)</label><input type="text" id="subj-icon" placeholder="📐"></div>
+            <button class="submit-btn" onclick="addSubject()">Fan qo'shish</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-weight:600;margin-bottom:0.8rem">Mavjud fanlar</div>
+          <div id="subjects-list"><div class="loading">Yuklanmoqda...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    <h2>Kirish</h2>
+    <div class="form-group"><label>Email *</label><input type="email" id="login-email" placeholder="aziz@gmail.com"></div>
+    <div class="form-group"><label>Parol *</label><input type="password" id="login-password" placeholder="••••••"></div>
+    <button class="submit-btn" onclick="login()">Kirish</button>
+    <div class="auth-link" style="margin-top:1rem">Hisobingiz yo'qmi? <a onclick="closeLoginModal();showPage('register')">Ro'yxatdan o'tish</a></div>
+  </div>
+</div>
+
+<!-- BRON MODAL -->
+<div class="modal-overlay" id="book-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBookModal()">✕</button>
+    <h2>Dars bron qilish</h2>
+   <div style="background:var(--surface);border-radius:10px;padding:0.7rem 1rem;margin-bottom:1rem;font-size:0.85rem;color:var(--accent)" id="book-user-info">👤 Yuklanmoqda...</div>
+    <div class="form-group"><label>Telefon</label><input type="text" id="b-phone" placeholder="+998901234567"></div>
+    <div class="form-group"><label>Fan *</label><input type="text" id="b-subject" placeholder="Matematika"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Dars turi *</label>
+        <select id="b-type"><option value="online">🌐 Online</option><option value="offline">📍 Offline</option></select>
+      </div>
+      <div class="form-group"><label>Sana va vaqt *</label><input type="datetime-local" id="b-date"></div>
+    </div>
+    <div class="form-group"><label>Izoh</label><textarea id="b-note" rows="2" placeholder="Qo'shimcha ma'lumot..."></textarea></div>
+    <input type="hidden" id="b-teacher-id">
+    <button class="submit-btn" onclick="submitBooking()">Bron qilish</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'https://o-rgatuvchiuz-production.up.railway.app';
+let allTeachers = [], currentFilter = '', currentUser = null, selectedRole = 'student';
+
+// ── ROLE ──
+function setRole(role) {
+  selectedRole = role;
+  document.getElementById('role-student').classList.toggle('active', role==='student');
+  document.getElementById('role-teacher').classList.toggle('active', role==='teacher');
+}
+
+// ── AUTH ──
+async function register() {
+  const full_name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  if (!full_name||!email||!password) { showToast('Barcha maydonlarni to\'ldiring!',true); return; }
+  try {
+    const res = await fetch(`${API}/auth/register`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({full_name, email, password, role: selectedRole})
+    });
+    const data = await res.json();
+    if (res.ok) { showToast('Muvaffaqiyatli ro\'yxatdan o\'tdingiz!'); openLoginModal(); showPage('home'); }
+    else showToast(data.detail||'Xato!', true);
+  } catch(e) { showToast('Server bilan ulanib bo\'lmadi!', true); }
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email||!password) { showToast('Email va parolni kiriting!', true); return; }
+  try {
+    const form = new FormData();
+    form.append('username', email); form.append('password', password);
+    const res = await fetch(`${API}/auth/login`, {method:'POST', body:form});
+    const data = await res.json();
+    if (res.ok) {
+      currentUser = data.user;
+      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      closeLoginModal();
+      updateNav();
+      showToast(`Xush kelibsiz, ${data.user.full_name}!`);
+    } else showToast(data.detail||'Email yoki parol noto\'g\'ri!', true);
+  } catch(e) { showToast('Server bilan ulanib bo\'lmadi!', true); }
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  updateNav();
+  showPage('home');
+  showToast('Chiqish amalga oshirildi');
+}
+
+function updateNav() {
+  const nav = document.getElementById('nav-right');
+  if (currentUser) {
+    const isAdmin = currentUser.role === 'admin';
+    nav.innerHTML = `
+      <button class="nav-btn" onclick="showPage('home')">Bosh sahifa</button>
+      <button class="nav-btn" onclick="showPage('bookings')">Bronlar</button>
+      <button class="nav-btn" onclick="showPage('add-teacher')">O'qituvchi bo'lish</button>
+      ${isAdmin ? `<button class="nav-btn" onclick="showPage('admin');loadPending()">⚙️ Admin</button>` : ''}
+      <div class="user-chip">👤 ${currentUser.full_name.split(' ')[0]}</div>
+      <button class="nav-btn btn-danger" onclick="logout()">Chiqish</button>`;
+  } else {
+    nav.innerHTML = `
+      <button class="nav-btn" onclick="showPage('home')">Bosh sahifa</button>
+      <button class="nav-btn" onclick="showPage('bookings')">Bronlar</button>
+      <button class="nav-btn" onclick="showPage('add-teacher')">O'qituvchi bo'lish</button>
+      <button class="nav-btn" onclick="openLoginModal()">Kirish</button>
+      <button class="nav-btn btn-accent" onclick="showPage('register')">Ro'yxatdan o'tish</button>`;
+  }
+}
+
+// ── SUBJECTS ──
+async function loadSubjects() {
+  try {
+    const res = await fetch(`${API}/subjects/`);
+    const subjects = await res.json();
+    document.getElementById('stat-subjects').textContent = subjects.length;
+    // Filters
+    const fc = document.getElementById('subject-filters');
+    fc.innerHTML = `<button class="filter-btn active" onclick="setFilter('',this)">Hammasi</button>`;
+    subjects.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = (s.icon||'') + ' ' + s.name;
+      btn.onclick = function(){ setFilter(s.name.toLowerCase(), this); };
+      fc.appendChild(btn);
+    });
+    // Teacher form select
+    const sel = document.getElementById('t-subject');
+    if (sel) {
+      sel.innerHTML = '<option value="">Fan tanlang...</option>';
+      subjects.forEach(s => { sel.innerHTML += `<option value="${s.name}">${(s.icon||'')} ${s.name}</option>`; });
+    }
+    // Admin subjects list
+    const list = document.getElementById('subjects-list');
+    if (list) {
+      if (!subjects.length) { list.innerHTML = '<div class="empty">Fanlar yo\'q</div>'; return; }
+      list.innerHTML = subjects.map(s => `
+        <div class="subject-item">
+          <span>${s.icon||''} ${s.name}</span>
+          <button class="del-btn" onclick="deleteSubject(${s.id})">O'chirish</button>
+        </div>`).join('');
+    }
+  } catch(e) {}
+}
+
+async function addSubject() {
+  const name = document.getElementById('subj-name').value.trim();
+  const icon = document.getElementById('subj-icon').value.trim();
+  if (!name) { showToast('Fan nomini kiriting!', true); return; }
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API}/subjects/`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+    body: JSON.stringify({name, icon:icon||null})
+  });
+  const data = await res.json();
+  if (res.ok) { showToast('Fan qo\'shildi!'); document.getElementById('subj-name').value=''; document.getElementById('subj-icon').value=''; loadSubjects(); }
+  else showToast(data.detail||'Xato!', true);
+}
+
+async function deleteSubject(id) {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API}/subjects/${id}`, {method:'DELETE', headers:{'Authorization':`Bearer ${token}`}});
+  if (res.ok) { showToast('Fan o\'chirildi!'); loadSubjects(); }
+}
+
+// ── TEACHERS ──
+async function loadTeachers() {
+  try {
+    const res = await fetch(`${API}/teachers/`);
+    allTeachers = await res.json();
+    document.getElementById('stat-teachers').textContent = allTeachers.length;
+    renderTeachers(allTeachers);
+  } catch(e) {
+    document.getElementById('teachers-grid').innerHTML = '<div class="empty">Server bilan ulanib bo\'lmadi 😔</div>';
+  }
+}
+
+function renderTeachers(teachers) {
+  const grid = document.getElementById('teachers-grid');
+  if (!currentUser) {
+    grid.innerHTML = `<div class="empty" style="padding:4rem 2rem">
+      <div style="font-size:3rem;margin-bottom:1rem">🔐</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem">Kirish talab etiladi</div>
+      <div style="color:var(--muted);margin-bottom:1.5rem">O'qituvchilarni ko'rish uchun ro'yxatdan o'ting</div>
+      <button onclick="openLoginModal()" class="book-btn" style="padding:0.7rem 2rem;font-size:0.95rem">Kirish</button>
+      <span style="margin:0 0.5rem;color:var(--muted)">yoki</span>
+      <button onclick="showPage('register')" class="book-btn" style="padding:0.7rem 2rem;font-size:0.95rem;background:none;border:1px solid var(--accent);color:var(--accent)">Ro'yxatdan o'tish</button>
+    </div>`;
+    return;
+  }
+  if (!teachers.length) { grid.innerHTML = '<div class="empty">Hech narsa topilmadi 😔</div>'; return; }
+  grid.innerHTML = teachers.map(t => `
+    <div class="teacher-card">
+      <div class="card-top">
+        <div class="avatar">${t.name.charAt(0)}</div>
+        <div class="card-info"><h3>${t.name}</h3><small>${t.city||'Shahar ko\'rsatilmagan'}</small></div>
+      </div>
+      <div class="badge">${t.subject}</div>
+      <div class="rating">★★★★★ <span style="color:var(--muted)">${t.rating||'5.0'}</span></div>
+      <div class="card-meta">
+        <div class="meta-item"><span>Tajriba</span><span>${t.experience} yil</span></div>
+        <div class="meta-item"><span>Telefon</span><span>${t.phone||'—'}</span></div>
+        ${t.degree_type?`<div class="meta-item"><span>Daraja</span><span>${t.degree_type}</span></div>`:''}
+      </div>
+      ${t.bio?`<div class="card-bio">${t.bio}</div>`:''}
+      <div class="card-footer">
+        <div class="price">${Number(t.price).toLocaleString()} <small>so'm/soat</small></div>
+        <div style="display:flex;gap:0.5rem">
+        <button class="book-btn" onclick="openBookModal(${t.id},'${t.subject}')">Bron qilish</button>
+        <button onclick="openRatingModal(${t.id},'${t.name}')" style="background:none;border:1px solid var(--warning);color:var(--warning);padding:0.45rem 0.8rem;border-radius:8px;cursor:pointer;font-size:0.82rem">⭐ Baho</button>
+      </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterTeachers() {
+  const search = document.getElementById('search-input').value.toLowerCase();
+  const filtered = allTeachers.filter(t => {
+    const matchSearch = !search || t.name.toLowerCase().includes(search) || t.subject.toLowerCase().includes(search);
+    const matchFilter = !currentFilter || t.subject.toLowerCase().includes(currentFilter);
+    return matchSearch && matchFilter;
+  });
+  renderTeachers(filtered);
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTeachers();
+}
+
+async function addTeacher() {
+  const name = document.getElementById('t-name').value.trim();
+  const subject = document.getElementById('t-subject').value;
+  const experience = parseInt(document.getElementById('t-experience').value);
+  const price = parseInt(document.getElementById('t-price').value);
+  if (!name||!subject||isNaN(experience)||isNaN(price)) { showToast('Majburiy maydonlarni to\'ldiring!', true); return; }
+  try {
+    const res = await fetch(`${API}/teachers/`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name, subject, experience, price,
+        phone: document.getElementById('t-phone').value||null,
+        city: document.getElementById('t-city').value||null,
+        bio: document.getElementById('t-bio').value||null,
+        university: document.getElementById('t-university').value||null,
+        degree_type: document.getElementById('t-degree').value||null,
+        degree_year: parseInt(document.getElementById('t-degree-year').value)||null,
+        certificate_info: document.getElementById('t-certificate').value||null,
+      })
+    });
+    if (res.ok) {
+      showToast('Arizangiz yuborildi! Admin tekshirib tasdiqlaydi. ✅');
+      ['t-name','t-experience','t-price','t-phone','t-city','t-bio','t-university','t-degree-year','t-certificate'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('t-subject').value='';
+      document.getElementById('t-degree').value='';
+      showPage('home');
+    }
+  } catch(e) { showToast('Xato yuz berdi!', true); }
+}
+
+// ── ADMIN ──
+async function loadPending() {
+  try {
+    const res = await fetch(`${API}/teachers/pending`);
+    const teachers = await res.json();
+    const list = document.getElementById('pending-list');
+    if (!teachers.length) { list.innerHTML = '<div class="empty">Kutayotgan arizalar yo\'q ✅</div>'; return; }
+    list.innerHTML = teachers.map(t => `
+      <div class="pending-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="flex:1">
+            <h3>${t.name}</h3>
+            <div class="pending-meta">${t.subject} | ${t.experience} yil tajriba | ${Number(t.price).toLocaleString()} so'm/soat</div>
+            <div class="pending-detail">📍 ${t.city||'—'} | 📞 ${t.phone||'—'}</div>
+            ${t.university?`<div class="pending-detail">🏛 ${t.university} ${t.degree_type?'| '+t.degree_type:''} ${t.degree_year?'('+t.degree_year+')':''}</div>`:''}
+            ${t.certificate_info?`<div class="pending-detail">📜 ${t.certificate_info}</div>`:''}
+            ${t.bio?`<div class="pending-detail" style="margin-top:0.5rem">${t.bio}</div>`:''}
+          </div>
+          <span class="status-badge status-pending">Kutmoqda</span>
+        </div>
+        <div class="pending-actions">
+          <button class="btn-verify" onclick="verifyTeacher(${t.id})">✅ Tasdiqlash</button>
+          <button class="btn-reject" onclick="rejectTeacher(${t.id})">❌ Rad etish</button>
+        </div>
+      </div>`).join('');
+  } catch(e) { showToast('Xato!', true); }
+}
+
+async function verifyTeacher(id) {
+  const res = await fetch(`${API}/teachers/${id}/verify`, {method:'PUT'});
+  if (res.ok) { showToast('Tasdiqlandi! ✅'); loadPending(); loadTeachers(); }
+}
+
+async function rejectTeacher(id) {
+  const reason = prompt('Rad etish sababi:');
+  if (!reason) return;
+  const res = await fetch(`${API}/teachers/${id}/reject?reason=${encodeURIComponent(reason)}`, {method:'PUT'});
+  if (res.ok) { showToast('Rad etildi!'); loadPending(); }
+}
+
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(`admin-${tab}`).classList.add('active');
+  if (tab==='subjects') loadSubjects();
+  if (tab==='pending') loadPending();
+}
+
+// ── BOOKINGS ──
+async function loadBookings() {
+  try {
+    const res = await fetch(`${API}/bookings/`);
+    const bookings = await res.json();
+    const list = document.getElementById('bookings-list');
+    if (!bookings.length) { list.innerHTML = '<div class="empty">Hozircha bronlar yo\'q</div>'; return; }
+    list.innerHTML = bookings.map(b => `
+      <div class="booking-item">
+        <div class="booking-info">
+          <h4>Bron #${b.id} — ${b.subject}</h4>
+          <p>${b.lesson_type==='online'?'🌐 Online':'📍 Offline'} · ${b.lesson_date}</p>
+          <p>O'quvchi ID: ${b.student_id} · O'qituvchi ID: ${b.teacher_id}</p>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+          <span class="status-badge status-${b.status}">${b.status==='pending'?'Kutilmoqda':b.status==='confirmed'?'Tasdiqlangan':'Bekor'}</span>
+          ${b.status==='pending'?`<button onclick="updateStatus(${b.id},'confirmed')" style="background:rgba(34,197,94,0.12);color:var(--success);border:none;padding:0.3rem 0.8rem;border-radius:7px;cursor:pointer;font-size:0.78rem;font-weight:600">Tasdiqlash</button>`:''}
+          <button onclick="deleteBooking(${b.id})" style="background:rgba(239,68,68,0.1);color:var(--danger);border:none;padding:0.3rem 0.8rem;border-radius:7px;cursor:pointer;font-size:0.78rem">O'chirish</button>
+        </div>
+      </div>`).join('');
+  } catch(e) { document.getElementById('bookings-list').innerHTML = '<div class="empty">Yuklab bo\'lmadi</div>'; }
+}
+
+async function updateStatus(id, status) {
+  await fetch(`${API}/bookings/${id}/status?status=${status}`, {method:'PUT'});
+  showToast('Status yangilandi!'); loadBookings();
+}
+
+async function deleteBooking(id) {
+  await fetch(`${API}/bookings/${id}`, {method:'DELETE'});
+  showToast('Bron o\'chirildi!'); loadBookings();
+}
+
+// ── BRON MODAL ──
+function openBookModal(teacherId, subject) {
+  if (!currentUser) { openLoginModal(); return; }
+  document.getElementById('book-modal').classList.add('open');
+  document.getElementById('b-teacher-id').value = teacherId||'';
+  document.getElementById('b-subject').value = subject||'';
+  const info = document.getElementById('book-user-info');
+ if (info) info.textContent = '👤 ' + (currentUser ? currentUser.full_name : 'Mehmon') + ' sifatida bron qilinadi';
+}
+function closeBookModal() { document.getElementById('book-modal').classList.remove('open'); }
+
+async function submitBooking() {
+  if (!currentUser) { openLoginModal(); return; }
+  const subject = document.getElementById('b-subject').value.trim();
+  const date = document.getElementById('b-date').value;
+  const teacherId = document.getElementById('b-teacher-id').value;
+  if (!subject||!date||!teacherId) { showToast('Majburiy maydonlarni to\'ldiring!', true); return; }
+  try {
+    // Avval mavjud studentni tekshir, yo'q bo'lsa yaratamiz
+    const sRes = await fetch(`${API}/students/?name=${encodeURIComponent(currentUser.full_name)}`);
+    let students = await sRes.json();
+    let student;
+    if (students.length > 0) {
+      student = students[0];
+    } else {
+      const createRes = await fetch(`${API}/students/`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({name: currentUser.full_name, subject, phone: null})
+      });
+      student = await createRes.json();
+    }
+    const bRes = await fetch(`${API}/bookings/`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        student_id: student.id, teacher_id: parseInt(teacherId), subject,
+        lesson_type: document.getElementById('b-type').value,
+        lesson_date: date.replace('T',' '),
+        note: document.getElementById('b-note').value||null
+      })
+    });
+    if (bRes.ok) {
+      showToast('Bron muvaffaqiyatli yaratildi! 🎉');
+      closeBookModal();
+      ['b-phone','b-subject','b-date','b-note'].forEach(id=>document.getElementById(id).value='');
+    }
+  } catch(e) { showToast('Xato yuz berdi!', true); }
+}
+
+// ── LOGIN MODAL ──
+function openLoginModal() { document.getElementById('login-modal').classList.add('open'); }
+function closeLoginModal() { document.getElementById('login-modal').classList.remove('open'); }
+
+// ── PAGE ROUTER ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  if (name==='home') { loadTeachers(); loadSubjects(); }
+  if (name==='bookings') loadBookings();
+  if (name==='add-teacher') loadSubjects();
+  if (name==='admin') { loadPending(); }
+}
+
+// ── TOAST ──
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(isError?' error':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+// ── INIT ──
+const savedUser = localStorage.getItem('user');
+if (savedUser) { currentUser = JSON.parse(savedUser); updateNav(); }
+loadTeachers();
+loadSubjects();
+</script>
+<!-- REYTING MODAL -->
+<div class="modal-overlay" id="rating-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeRatingModal()">✕</button>
+    <h2>⭐ Baho qo'yish</h2>
+    <div id="rating-teacher-name" style="color:var(--accent);font-weight:600;margin-bottom:1rem"></div>
+    <div style="margin-bottom:1rem">
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem">Yulduz:</div>
+      <div style="display:flex;gap:0.5rem;font-size:1.8rem" id="stars-container">
+        <span onclick="setStar(1)" style="cursor:pointer">⭐</span>
+        <span onclick="setStar(2)" style="cursor:pointer">⭐</span>
+        <span onclick="setStar(3)" style="cursor:pointer">⭐</span>
+        <span onclick="setStar(4)" style="cursor:pointer">⭐</span>
+        <span onclick="setStar(5)" style="cursor:pointer">⭐</span>
+      </div>
+      <div id="star-count" style="font-size:0.85rem;color:var(--muted);margin-top:0.3rem">Hali tanlanmagan</div>
+    </div>
+    <div class="form-group"><label>Izoh (ixtiyoriy)</label><textarea id="rating-comment" rows="3" placeholder="O'qituvchi haqida fikringiz..."></textarea></div>
+    <input type="hidden" id="rating-teacher-id">
+    <button class="submit-btn" onclick="submitRating()">Baho yuborish</button>
+  </div>
+</div>
+
+<!-- AI YORDAMCHI -->
+<div id="ai-btn" onclick="toggleAI()" style="position:fixed;bottom:2rem;left:2rem;background:var(--accent);color:#0f0f0f;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;z-index:150;box-shadow:0 4px 20px rgba(200,241,53,0.3)">🤖</div>
+
+<div id="ai-panel" style="display:none;position:fixed;bottom:5.5rem;left:2rem;width:340px;background:var(--card);border:1px solid var(--border);border-radius:20px;z-index:150;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.4)">
+  <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem">🤖 AI Yordamchi</div>
+    <button onclick="toggleAI()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem">✕</button>
+  </div>
+  <div id="ai-messages" style="height:300px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.7rem">
+    <div style="background:var(--surface);border-radius:12px;padding:0.7rem 0.9rem;font-size:0.83rem;color:var(--text);max-width:85%">
+      Salom! Men O'rgatuvchi.uz AI yordamchisiman 👋 O'qituvchi tanlashda, bron qilishda yoki sayt haqida savol bo'lsa yordam beraman!
+    </div>
+  </div>
+  <div style="padding:0.8rem;border-top:1px solid var(--border);display:flex;gap:0.5rem">
+    <input id="ai-input" type="text" placeholder="Savol yozing..." onkeydown="if(event.key==='Enter')sendAI()" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:0.55rem 0.8rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none">
+    <button onclick="sendAI()" style="background:var(--accent);color:#0f0f0f;border:none;padding:0.55rem 1rem;border-radius:10px;cursor:pointer;font-weight:700;font-size:0.85rem">→</button>
+  </div>
+</div>
+
+<script>
+// ── REYTING ──
+let selectedStar = 0;
+let ratingTeacherId = null;
+
+function openRatingModal(teacherId, teacherName) {
+  if (!currentUser) { openLoginModal(); return; }
+  ratingTeacherId = teacherId;
+  selectedStar = 0;
+  document.getElementById('rating-modal').classList.add('open');
+  document.getElementById('rating-teacher-name').textContent = teacherName;
+  document.getElementById('rating-comment').value = '';
+  document.getElementById('star-count').textContent = 'Hali tanlanmagan';
+  updateStars(0);
+}
+
+function closeRatingModal() {
+  document.getElementById('rating-modal').classList.remove('open');
+}
+
+function setStar(n) {
+  selectedStar = n;
+  updateStars(n);
+  document.getElementById('star-count').textContent = n + ' yulduz';
+}
+
+function updateStars(n) {
+  const stars = document.getElementById('stars-container').children;
+  for (let i = 0; i < 5; i++) {
+    stars[i].style.opacity = i < n ? '1' : '0.3';
+  }
+}
+
+async function submitRating() {
+  if (!selectedStar) { showToast('Yulduz tanlang!', true); return; }
+  try {
+    const res = await fetch(`${API}/ratings/`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        teacher_id: ratingTeacherId,
+        student_name: currentUser.full_name,
+        stars: selectedStar,
+        comment: document.getElementById('rating-comment').value || null
+      })
+    });
+    if (res.ok) {
+      showToast('Bahongiz qabul qilindi! ⭐');
+      closeRatingModal();
+      loadTeachers();
+    } else {
+      showToast('Xato yuz berdi!', true);
+    }
+  } catch(e) {
+    showToast('Server bilan ulanib bo\'lmadi!', true);
+  }
+}
+
+const GEMINI_KEY = 'AIzaSyBKxo4xzhPBsS3Nu6ao0iZmyjXirTbnNBw';
+let aiOpen = false;
+
+function toggleAI() {
+  aiOpen = !aiOpen;
+  document.getElementById('ai-panel').style.display = aiOpen ? 'block' : 'none';
+}
+
+function addAIMsg(text, isUser=false) {
+  const box = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.style.cssText = `background:${isUser?'var(--accent)':'var(--surface)'};color:${isUser?'#0f0f0f':'var(--text)'};border-radius:12px;padding:0.7rem 0.9rem;font-size:0.83rem;max-width:85%;${isUser?'align-self:flex-end;margin-left:auto':''}`;
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendAI() {
+  const input = document.getElementById('ai-input');
+  const question = input.value.trim();
+  if (!question) return;
+  input.value = '';
+  addAIMsg(question, true);
+  addAIMsg('⏳ Javob tayyorlanmoqda...', false);
+
+  try {
+    const teachersRes = await fetch(`${API}/teachers/`);
+    const teachers = await teachersRes.json();
+    const teacherList = teachers.map(t =>
+      `- ${t.name}: ${t.subject}, ${t.experience} yil tajriba, ${Number(t.price).toLocaleString()} so'm/soat, shahar: ${t.city||'nomalum'}, reyting: ${t.rating||5}`
+    ).join('\n');
+
+    const prompt = `Sen O'rgatuvchi.uz platformasining AI yordamchisissan. 
+Platformada quyidagi o'qituvchilar bor:
+${teacherList || "Hozircha o'qituvchilar yo'q"}
+
+Foydalanuvchi savoli: ${question}
+
+Qisqa, aniq va do'stona javob ber. O'qituvchi tavsiya qilsang, ism va narxini ayt. Faqat o'zbek tilida javob ber.`;
+
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({contents:[{parts:[{text: prompt}]}]})
+    });
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Javob olishda xato!';
+
+    const msgs = document.getElementById('ai-messages');
+    msgs.lastChild.remove();
+    addAIMsg(reply);
+  } catch(e) {
+    const msgs = document.getElementById('ai-messages');
+    msgs.lastChild.remove();
+    addAIMsg('Xato yuz berdi, qayta urining!');
+  }
+}
+</script>
+</body>
+</html>
+HTMLEOF
+echo "Done"
+Output
+
+Done
