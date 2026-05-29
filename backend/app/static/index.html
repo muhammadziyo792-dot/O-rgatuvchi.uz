@@ -378,11 +378,30 @@ async function register() {
       body: JSON.stringify({full_name, email, password, role: selectedRole})
     });
     const data = await res.json();
-    if (res.ok) { showToast('Muvaffaqiyatli ro\'yxatdan o\'tdingiz!'); openLoginModal(); showPage('home'); }
+    if (res.ok) {
+      showToast('Email ga tasdiqlash kodi yuborildi! 📧');
+      // Tasdiqlash oynasini ko'rsat
+      document.getElementById('verify-email-val').value = email;
+      document.getElementById('verify-modal').classList.add('open');
+    }
     else showToast(data.detail||'Xato!', true);
   } catch(e) { showToast('Server bilan ulanib bo\'lmadi!', true); }
 }
 
+async function verifyCode() {
+  const email = document.getElementById('verify-email-val').value;
+  const code = document.getElementById('verify-code').value.trim();
+  if (!code) { showToast('Kodni kiriting!', true); return; }
+  try {
+    const res = await fetch(`${API}/auth/verify-email?email=${encodeURIComponent(email)}&code=${code}`, {method:'POST'});
+    const data = await res.json();
+    if (res.ok) {
+      showToast('Muvaffaqiyatli ro\'yxatdan o\'tdingiz! 🎉');
+      document.getElementById('verify-modal').classList.remove('open');
+      openLoginModal();
+    } else showToast(data.detail||'Kod noto\'g\'ri!', true);
+  } catch(e) { showToast('Xato!', true); }
+}
 async function login() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
