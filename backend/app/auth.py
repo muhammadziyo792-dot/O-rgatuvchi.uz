@@ -8,6 +8,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from typing import Optional
 from app.database import get_db, Base
+import bcrypt
 
 SECRET_KEY = "mentoruz_secret_key_2024"
 ALGORITHM = "HS256"
@@ -16,8 +17,15 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-from app.models import User
-
+class User(Base):
+    __tablename__ = "users"
+    __table_args__ = {'extend_existing': True}
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String(100), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    hashed_password = Column(String(200), nullable=False)
+    role = Column(String(20), default="student")
+    is_active = Column(Boolean, default=True)
 class UserRegister(BaseModel):
     full_name: str = Field(..., min_length=2)
     email: str = Field(..., min_length=5)
@@ -38,12 +46,10 @@ class Token(BaseModel):
     user: UserOut
 
 def hash_password(password: str):
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 def verify_password(plain, hashed):
-    import bcrypt
     return bcrypt.checkpw(plain.encode(), hashed.encode())
-
 def create_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
