@@ -66,8 +66,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         return user
     except JWTError:
         raise HTTPException(status_code=401, detail="Token yaroqsiz")
-        verification_codes = {}
-
+        
 def send_verification_email(email: str, code: str):
     EMAIL_USER = os.getenv("EMAIL_USER")
     EMAIL_PASS = os.getenv("EMAIL_PASS")
@@ -86,6 +85,8 @@ def send_verification_email(email: str, code: str):
         server.send_message(msg)
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
+
+verification_codes = {}
 
 @router.post("/register", status_code=201)
 def register(data: UserRegister, db: Session = Depends(get_db)):
