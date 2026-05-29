@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from app.database import get_db, Base
 import bcrypt
+from app.models import User
 import smtplib
 import random
 from email.mime.text import MIMEText
@@ -22,15 +23,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-class User(Base):
-    __tablename__ = "users"
-    __table_args__ = {'extend_existing': True}
-    id = Column(Integer, primary_key=True, index=True)
-    full_name = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-    hashed_password = Column(String(200), nullable=False)
-    role = Column(String(20), default="student")
-    is_active = Column(Boolean, default=True)
+
 class UserRegister(BaseModel):
     full_name: str = Field(..., min_length=2)
     email: str = Field(..., min_length=5)
