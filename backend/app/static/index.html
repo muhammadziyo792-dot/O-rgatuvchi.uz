@@ -132,9 +132,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#f0f4f8;padding:0.8rem 1.4rem;border-radius:12px;font-weight:600;font-size:0.88rem;z-index:300;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.error{background:var(--danger);color:#fff}
-  @media (max-width: 768px) {
-  .nav-right { gap: 0.3rem; }
-  .nav-btn { padding: 0.35rem 0.6rem; font-size: 0.75rem; }
+ @media (max-width: 768px) {
+  nav { flex-wrap: wrap; padding: 0.7rem 1rem; }
+  .nav-right { 
+    width: 100%; 
+    justify-content: center; 
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  .nav-btn { padding: 0.35rem 0.7rem; font-size: 0.78rem; }
   .hero { padding: 3rem 1rem 1rem; }
   .hero-stats { gap: 1.5rem; }
   .grid { grid-template-columns: 1fr; }
