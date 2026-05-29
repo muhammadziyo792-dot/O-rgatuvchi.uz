@@ -922,5 +922,14 @@ Qisqa, aniq va do'stona javob ber. O'qituvchi tavsiya qilsang, ism va narxini ay
   }
 }
 </script>
+  <div class="modal-overlay" id="verify-modal">
+  <div class="modal">
+    <h2>📧 Email tasdiqlash</h2>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem">Emailingizga 6 xonali kod yuborildi</p>
+    <input type="hidden" id="verify-email-val">
+    <div class="form-group"><label>Tasdiqlash kodi *</label><input type="text" id="verify-code" placeholder="123456" maxlength="6"></div>
+    <button class="submit-btn" onclick="verifyCode()">Tasdiqlash</button>
+  </div>
+</div>
 </body>
 </html>
