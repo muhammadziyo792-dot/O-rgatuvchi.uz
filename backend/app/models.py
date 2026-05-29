@@ -29,3 +29,4 @@ class User(Base):
     email = Column(String(100), nullable=False, unique=True)
     hashed_password = Column(String(200), nullable=False)
     role = Column(String(20), default="student")
+    is_active = Column(Boolean, default=True)
