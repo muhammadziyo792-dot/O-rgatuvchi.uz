@@ -44,11 +44,14 @@ router = APIRouter(prefix="/students", tags=["Students"])
 
 @router.get("/", response_model=List[StudentOut])
 def get_students(
+    name: Optional[str] = None,
     subject: Optional[str] = None,
     city: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
     query = db.query(Student)
+    if name:
+        query = query.filter(Student.name.ilike(f"%{name}%"))
     if subject:
         query = query.filter(Student.subject.ilike(f"%{subject}%"))
     if city:

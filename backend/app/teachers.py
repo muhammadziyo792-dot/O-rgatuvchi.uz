@@ -71,6 +71,18 @@ def verify_teacher(
         raise HTTPException(status_code=404, detail="O'qituvchi topilmadi")
     teacher.is_verified = True
     teacher.status = "verified"
+    
+    from datetime import datetime
+    if teacher.user_email:
+        notification = models.Notification(
+            user_email=teacher.user_email,
+            title="Arizangiz tasdiqlandi! 🎉",
+            message=f"Tabriklaymiz! Sizning '{teacher.subject}' fani bo'yicha o'qituvchi bo'lish haqidagi arizangiz tasdiqlandi. O'qituvchi profilingiz platformada faollashtirildi.",
+            is_read=False,
+            created_at=str(datetime.now().strftime("%Y-%m-%d %H:%M"))
+        )
+        db.add(notification)
+        
     db.commit()
     return {"message": "Tasdiqlandi"}
 
@@ -88,6 +100,18 @@ def reject_teacher(
         raise HTTPException(status_code=404, detail="O'qituvchi topilmadi")
     teacher.is_verified = False
     teacher.status = "rejected"
+    
+    from datetime import datetime
+    if teacher.user_email:
+        notification = models.Notification(
+            user_email=teacher.user_email,
+            title="Arizangiz rad etildi ❌",
+            message=f"Sizning '{teacher.subject}' fani bo'yicha o'qituvchi bo'lish haqidagi arizangiz rad etildi. Sabab: {reason}",
+            is_read=False,
+            created_at=str(datetime.now().strftime("%Y-%m-%d %H:%M"))
+        )
+        db.add(notification)
+        
     db.commit()
     return {"message": "Rad etildi"}
 

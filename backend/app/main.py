@@ -11,9 +11,17 @@ from app.videos import router as video_router
 from app.chat import router as chat_router
 from app.tests import router as test_router
 from app.ratings import router as rating_router
+from app.notifications import router as notification_router
 from app.database import engine, Base
+from sqlalchemy import text
 
 Base.metadata.create_all(bind=engine)
+
+try:
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE teachers ADD COLUMN user_email VARCHAR(100)"))
+except Exception:
+    pass
 
 app = FastAPI(title="O'rgatuvchi.uz API", version="2.0.0")
 
@@ -33,6 +41,7 @@ app.include_router(video_router)
 app.include_router(chat_router)
 app.include_router(test_router)
 app.include_router(rating_router)
+app.include_router(notification_router)
 
 import os
 

@@ -93,16 +93,22 @@ def register(data: UserRegister, db: Session = Depends(get_db)):
     existing = db.query(User).filter(User.email == data.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="Bu email allaqachon ro'yxatdan o'tgan")
-    code = str(random.randint(100000, 999999))
-    verification_codes[data.email] = {
-        "code": code,
-        "data": data.dict()
-    }
-    send_verification_email(data.email, code)
-    return {"message": "Email ga tasdiqlash kodi yuborildi!"}
+    user = User(
+        full_name=data.full_name,
+        email=data.email,
+        hashed_password=hash_password(data.password),
+        role=data.role
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return {"message": "Ro'yxatdan muvaffaqiyatli o'tdingiz!"}
 
 @router.post("/verify-email")
 def verify_email(email: str, code: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == email).first()
+    if user:
+        return {"message": "Ro'yxatdan muvaffaqiyatli o'tdingiz!"}
     if email not in verification_codes:
         raise HTTPException(status_code=400, detail="Kod topilmadi yoki muddati o'tgan")
     if verification_codes[email]["code"] != code:

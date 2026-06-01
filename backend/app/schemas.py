@@ -13,6 +13,7 @@ class TeacherCreate(BaseModel):
     degree_type: Optional[str] = None
     degree_year: Optional[int] = None
     certificate_info: Optional[str] = None
+    user_email: Optional[str] = None
 
 class TeacherUpdate(BaseModel):
     name: Optional[str] = None
@@ -43,6 +44,7 @@ class TeacherOut(BaseModel):
     certificate_info: Optional[str]
     is_verified: bool
     status: str
+    user_email: Optional[str]
 
     class Config:
         from_attributes = True
