@@ -23,6 +23,28 @@ try:
 except Exception:
     pass
 
+try:
+    from app.models import Subject
+    from app.database import SessionLocal
+    db_session = SessionLocal()
+    if db_session.query(Subject).count() == 0:
+        default_subjects = [
+            Subject(name="Matematika", icon="📐"),
+            Subject(name="Fizika", icon="⚛️"),
+            Subject(name="Ona tili", icon="✍️"),
+            Subject(name="Ekonometrika", icon="📊"),
+            Subject(name="Adabiyot", icon="📚"),
+            Subject(name="Menejment", icon="💼"),
+            Subject(name="Biologiya", icon="🌱"),
+            Subject(name="Iqtisodiyot", icon="🪙"),
+            Subject(name="Buxgalteriya hisobi", icon="📉")
+        ]
+        db_session.add_all(default_subjects)
+        db_session.commit()
+    db_session.close()
+except Exception as e:
+    print("Database seeding failed:", e)
+
 app = FastAPI(title="O'rgatuvchi.uz API", version="2.0.0")
 
 app.add_middleware(

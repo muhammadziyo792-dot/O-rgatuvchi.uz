@@ -245,42 +245,46 @@ nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap
 <!-- ADD TEACHER -->
 <div id="page-add-teacher" class="page">
   <div class="content">
-    <div class="section-title">O'qituvchi sifatida ariza topshirish</div>
-    <div class="section-sub">Arizangiz admin tomonidan ko'rib chiqiladi va tasdiqlangandan so'ng sahifada paydo bo'ladi.</div>
-    <div class="form-card">
-      <div class="form-row">
-        <div class="form-group"><label>Ism familiya *</label><input type="text" id="t-name" placeholder="Aziz Karimov"></div>
-        <div class="form-group"><label>Fan *</label><select id="t-subject"><option value="">Fan tanlang...</option></select></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>Tajriba (yil) *</label><input type="number" id="t-experience" placeholder="5" min="0"></div>
-        <div class="form-group"><label>Narx (so'm/soat) *</label><input type="number" id="t-price" placeholder="50000" min="0"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>Telefon</label><input type="text" id="t-phone" placeholder="+998901234567"></div>
-        <div class="form-group"><label>Shahar</label><input type="text" id="t-city" placeholder="Toshkent"></div>
-      </div>
-      <div class="divider"></div>
-      <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;margin-bottom:1rem;color:var(--accent)">📚 Ta'lim ma'lumotlari</div>
-      <div class="form-row">
-        <div class="form-group"><label>Universitet / Muassasa</label><input type="text" id="t-university" placeholder="TDTU, NUUz..."></div>
-        <div class="form-group"><label>Daraja turi</label>
-          <select id="t-degree">
-            <option value="">Tanlang</option>
-            <option value="Bakalavr">Bakalavr</option>
-            <option value="Magistr">Magistr</option>
-            <option value="Doktorant">Doktorant</option>
-            <option value="PhD">PhD</option>
-            <option value="Fan doktori">Fan doktori</option>
-          </select>
+    <div id="add-teacher-status-wrapper" style="display:none; text-align:center; padding:3rem 2rem; background:var(--surface); border:1.5px solid var(--border); border-radius:20px; box-shadow:var(--shadow-sm); max-width:600px; margin:2rem auto;"></div>
+    
+    <div id="add-teacher-form-wrapper">
+      <div class="section-title">O'qituvchi sifatida ariza topshirish</div>
+      <div class="section-sub">Arizangiz admin tomonidan ko'rib chiqiladi va tasdiqlangandan so'ng sahifada paydo bo'ladi.</div>
+      <div class="form-card">
+        <div class="form-row">
+          <div class="form-group"><label>Ism familiya *</label><input type="text" id="t-name" placeholder="Aziz Karimov"></div>
+          <div class="form-group"><label>Fan *</label><select id="t-subject"><option value="">Fan tanlang...</option></select></div>
         </div>
+        <div class="form-row">
+          <div class="form-group"><label>Tajriba (yil) *</label><input type="number" id="t-experience" placeholder="5" min="0"></div>
+          <div class="form-group"><label>Narx (so'm/soat) *</label><input type="number" id="t-price" placeholder="50000" min="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefon</label><input type="text" id="t-phone" placeholder="+998901234567"></div>
+          <div class="form-group"><label>Shahar</label><input type="text" id="t-city" placeholder="Toshkent"></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;margin-bottom:1rem;color:var(--accent)">📚 Ta'lim ma'lumotlari</div>
+        <div class="form-row">
+          <div class="form-group"><label>Universitet / Muassasa</label><input type="text" id="t-university" placeholder="TDTU, NUUz..."></div>
+          <div class="form-group"><label>Daraja turi</label>
+            <select id="t-degree">
+              <option value="">Tanlang</option>
+              <option value="Bakalavr">Bakalavr</option>
+              <option value="Magistr">Magistr</option>
+              <option value="Doktorant">Doktorant</option>
+              <option value="PhD">PhD</option>
+              <option value="Fan doktori">Fan doktori</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Bitirgan yili</label><input type="number" id="t-degree-year" placeholder="2020" min="1980" max="2030"></div>
+          <div class="form-group"><label>Sertifikat ma'lumoti</label><input type="text" id="t-certificate" placeholder="IELTS 7.5, CELTA..."></div>
+        </div>
+        <div class="form-group"><label>O'zingiz haqingizda</label><textarea id="t-bio" rows="3" placeholder="Tajribangiz, uslubingiz haqida..."></textarea></div>
+        <button class="submit-btn" onclick="addTeacher()">Ariza yuborish</button>
       </div>
-      <div class="form-row">
-        <div class="form-group"><label>Bitirgan yili</label><input type="number" id="t-degree-year" placeholder="2020" min="1980" max="2030"></div>
-        <div class="form-group"><label>Sertifikat ma'lumoti</label><input type="text" id="t-certificate" placeholder="IELTS 7.5, CELTA..."></div>
-      </div>
-      <div class="form-group"><label>O'zingiz haqingizda</label><textarea id="t-bio" rows="3" placeholder="Tajribangiz, uslubingiz haqida..."></textarea></div>
-      <button class="submit-btn" onclick="addTeacher()">Ariza yuborish</button>
     </div>
   </div>
 </div>
@@ -720,6 +724,74 @@ function setFilter(filter, btn) {
   filterTeachers();
 }
 
+async function checkTeacherStatus() {
+  if (!currentUser) {
+    document.getElementById('add-teacher-status-wrapper').style.display = 'none';
+    document.getElementById('add-teacher-form-wrapper').style.display = 'block';
+    loadSubjects();
+    return;
+  }
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API}/teachers/my-status`, {
+      headers: {'Authorization': `Bearer ${token}`}
+    });
+    const data = await res.json();
+    const statusBox = document.getElementById('add-teacher-status-wrapper');
+    const formBox = document.getElementById('add-teacher-form-wrapper');
+
+    if (data.status === 'none') {
+      statusBox.style.display = 'none';
+      formBox.style.display = 'block';
+      loadSubjects();
+    } else if (data.status === 'pending') {
+      statusBox.style.display = 'block';
+      formBox.style.display = 'none';
+      statusBox.innerHTML = `
+        <div style="font-size:3.5rem;margin-bottom:1rem">⏳</div>
+        <h2 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--accent);margin-bottom:0.8rem">Arizangiz kutilmoqda</h2>
+        <p style="color:var(--text);font-size:0.95rem;line-height:1.6;margin-bottom:1.5rem">
+          Hurmatli <strong>${data.name}</strong>, sizning <strong>${data.subject}</strong> fani bo'yicha yuborgan arizangiz hozirda adminlarimiz tomonidan ko'rib chiqilmoqda.
+        </p>
+        <div style="font-size:0.8rem;color:var(--muted);background:var(--bg);padding:0.6rem 1rem;border-radius:10px;display:inline-block">
+          Status: <span style="color:var(--warning);font-weight:700">Kutilmoqda</span>
+        </div>
+      `;
+    } else if (data.status === 'verified') {
+      statusBox.style.display = 'block';
+      formBox.style.display = 'none';
+      statusBox.innerHTML = `
+        <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
+        <h2 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--success);margin-bottom:0.8rem">Tabriklaymiz!</h2>
+        <p style="color:var(--text);font-size:0.95rem;line-height:1.6;margin-bottom:1.5rem">
+          Sizning arizangiz tasdiqlandi. Hozirda siz O'rgatuvchi.uz platformasining faol repetitorisiz!
+        </p>
+        <button onclick="showPage('home')" class="submit-btn" style="max-width:200px;margin:0 auto">Bosh sahifaga o'tish</button>
+      `;
+    } else if (data.status === 'rejected') {
+      statusBox.style.display = 'block';
+      formBox.style.display = 'none';
+      statusBox.innerHTML = `
+        <div style="font-size:3.5rem;margin-bottom:1rem">❌</div>
+        <h2 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--danger);margin-bottom:0.8rem">Ariza rad etildi</h2>
+        <p style="color:var(--text);font-size:0.95rem;line-height:1.6;margin-bottom:1.5rem">
+          Sizning o'qituvchi bo'lish bo'yicha yuborgan arizangiz talablarga javob bermaganligi sababli rad etildi. Buni bildirishnomalar panelida ko'rishingiz mumkin.
+        </p>
+        <button onclick="showReapplyForm()" class="submit-btn" style="max-width:220px;margin:0 auto;background:var(--accent)">Qayta ariza topshirish</button>
+      `;
+    }
+  } catch (e) {
+    console.error("Statusni olishda xatolik:", e);
+    loadSubjects();
+  }
+}
+
+function showReapplyForm() {
+  document.getElementById('add-teacher-status-wrapper').style.display = 'none';
+  document.getElementById('add-teacher-form-wrapper').style.display = 'block';
+  loadSubjects();
+}
+
 async function addTeacher() {
   const name = document.getElementById('t-name').value.trim();
   const subject = document.getElementById('t-subject').value;
@@ -894,7 +966,7 @@ function showPage(name) {
   document.getElementById(`page-${name}`).classList.add('active');
   if (name==='home') { loadTeachers(); loadSubjects(); }
   if (name==='bookings') loadBookings();
-  if (name==='add-teacher') loadSubjects();
+  if (name==='add-teacher') checkTeacherStatus();
   if (name==='admin') { loadPending(); }
 }
 

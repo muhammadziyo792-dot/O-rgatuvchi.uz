@@ -32,8 +32,31 @@ def get_pending(
         raise HTTPException(status_code=403, detail="Faqat admin uchun!")
     return db.query(models.Teacher).filter(models.Teacher.is_verified == False).all()
 
+@router.get("/my-status")
+def get_my_status(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    teacher = db.query(models.Teacher).filter(models.Teacher.user_email == current_user.email).first()
+    if not teacher:
+        return {"status": "none"}
+    status_val = teacher.status
+    if not status_val:
+        status_val = "verified" if teacher.is_verified else "pending"
+    return {
+        "status": status_val,
+        "is_verified": teacher.is_verified,
+        "name": teacher.name,
+        "subject": teacher.subject
+    }
+
 @router.post("/", response_model=schemas.TeacherOut, status_code=201)
 def create_teacher(teacher: schemas.TeacherCreate, db: Session = Depends(get_db)):
+    if teacher.user_email:
+        existing = db.query(models.Teacher).filter(models.Teacher.user_email == teacher.user_email).first()
+        if existing:
+            db.delete(existing)
+            db.commit()
     db_teacher = models.Teacher(**teacher.model_dump())
     db.add(db_teacher)
     db.commit()
